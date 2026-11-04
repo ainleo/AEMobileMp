@@ -3,7 +3,7 @@ import { View, Text, Input, ScrollView, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import Button from '@taroify/core/button'
 import { MOCK_ITEMS, ItemType, ITEM_TYPE_LABEL } from '@/mock/appData'
-import { fetchIconList, getCachedIcons, iconFor, HostImage } from '@/services/iconHost'
+import { fetchIconMap, getCachedIconMap, iconForName, IconMap } from '@/services/iconHost'
 import { useThemeClass } from '@/hooks/useThemeClass'
 import './index.scss'
 
@@ -25,11 +25,11 @@ export default function Items() {
   const [q, setQ] = useState('')
   const [filter, setFilter] = useState<ItemType | 'all'>('all')
   const [craftableOnly, setCraftableOnly] = useState(false)
-  const [icons, setIcons] = useState<HostImage[]>(() => getCachedIcons())
+  const [iconMap, setIconMap] = useState<IconMap>(() => getCachedIconMap())
 
   useEffect(() => {
-    fetchIconList()
-      .then((l) => setIcons(l))
+    fetchIconMap()
+      .then((m) => setIconMap(m))
       .catch(() => {
         /* 图床不可达时用占位图标 */
       })
@@ -70,8 +70,8 @@ export default function Items() {
       </View>
 
       <View className='summary'>
-        <Text>共 {list.length} 项 · 图标 {icons.length}</Text>
-        <Button size='small' onClick={() => fetchIconList().then((l) => setIcons(l)).catch(() => Taro.showToast({ title: '图床不可达', icon: 'none' }))}>
+        <Text>共 {list.length} 项 · 图标映射 {Object.keys(iconMap.byName).length}</Text>
+        <Button size='small' onClick={() => fetchIconMap().then((m) => setIconMap(m)).catch(() => Taro.showToast({ title: '图床不可达', icon: 'none' }))}>
           刷新
         </Button>
       </View>
@@ -79,7 +79,7 @@ export default function Items() {
       <ScrollView scrollY className='grid-wrap'>
         <View className='grid'>
           {list.map((it) => {
-            const icon = iconFor(it.name, icons)
+            const icon = iconForName(it.name, iconMap)
             return (
               <View className='item-card' key={it.id} onClick={() => open(it)}>
                 <View className='item-icon' style={icon ? undefined : { background: iconColor(it.name) }}>
