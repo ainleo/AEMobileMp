@@ -2,13 +2,15 @@ import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import Button from '@taroify/core/button'
 import { MOCK_SERVER, MOCK_TPS, MOCK_NETWORKS } from '@/mock/appData'
+import { useThemeClass } from '@/hooks/useThemeClass'
 import './index.scss'
 
 export default function Monitor() {
+  const theme = useThemeClass()
   const max = 21
 
   return (
-    <View className='page'>
+    <View className={`page ${theme}`}>
       <View className='card'>
         <View className='row-between'>
           <View>

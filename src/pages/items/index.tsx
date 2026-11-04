@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react'
-import { View, Text, Input, ScrollView } from '@tarojs/components'
+import { useEffect, useMemo, useState } from 'react'
+import { View, Text, Input, ScrollView, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import Button from '@taroify/core/button'
 import { MOCK_ITEMS, ItemType, ITEM_TYPE_LABEL } from '@/mock/appData'
+import { fetchIconList, getCachedIcons, iconFor, HostImage } from '@/services/iconHost'
+import { useThemeClass } from '@/hooks/useThemeClass'
 import './index.scss'
 
 const FILTERS: { key: ItemType | 'all'; label: string }[] = [
@@ -19,9 +21,19 @@ function iconColor(name: string): string {
 }
 
 export default function Items() {
+  const theme = useThemeClass()
   const [q, setQ] = useState('')
   const [filter, setFilter] = useState<ItemType | 'all'>('all')
   const [craftableOnly, setCraftableOnly] = useState(false)
+  const [icons, setIcons] = useState<HostImage[]>(() => getCachedIcons())
+
+  useEffect(() => {
+    fetchIconList()
+      .then((l) => setIcons(l))
+      .catch(() => {
+        /* 图床不可达时用占位图标 */
+      })
+  }, [])
 
   const list = useMemo(() => {
     const kw = q.trim().toLowerCase()
@@ -42,48 +54,50 @@ export default function Items() {
   }
 
   return (
-    <View className='page items-page'>
+    <View className={`page items-page ${theme}`}>
       <View className='toolbar'>
         <Input className='search' value={q} onInput={(e: any) => setQ(e.detail.value)} placeholder='搜索物品 / 流体 / 源质' />
         <View className='filters'>
           {FILTERS.map((f) => (
-            <Text
-              key={f.key}
-              className={`chip ${filter === f.key ? 'chip--on' : ''}`}
-              onClick={() => setFilter(f.key)}
-            >
+            <Text key={f.key} className={`chip ${filter === f.key ? 'chip--on' : ''}`} onClick={() => setFilter(f.key)}>
               {f.label}
             </Text>
           ))}
-          <Text
-            className={`chip ${craftableOnly ? 'chip--on' : ''}`}
-            onClick={() => setCraftableOnly((v) => !v)}
-          >
+          <Text className={`chip ${craftableOnly ? 'chip--on' : ''}`} onClick={() => setCraftableOnly((v) => !v)}>
             仅可合成
           </Text>
         </View>
       </View>
 
       <View className='summary'>
-        <Text>共 {list.length} 项</Text>
-        <Button size='small' onClick={() => Taro.showToast({ title: '刷新（模拟）', icon: 'none' })}>刷新</Button>
+        <Text>共 {list.length} 项 · 图标 {icons.length}</Text>
+        <Button size='small' onClick={() => fetchIconList().then((l) => setIcons(l)).catch(() => Taro.showToast({ title: '图床不可达', icon: 'none' }))}>
+          刷新
+        </Button>
       </View>
 
       <ScrollView scrollY className='grid-wrap'>
         <View className='grid'>
-          {list.map((it) => (
-            <View className='item-card' key={it.id} onClick={() => open(it)}>
-              <View className='item-icon' style={{ background: iconColor(it.name) }}>
-                <Text className='item-icon-text'>{it.name.slice(0, 1)}</Text>
+          {list.map((it) => {
+            const icon = iconFor(it.name, icons)
+            return (
+              <View className='item-card' key={it.id} onClick={() => open(it)}>
+                <View className='item-icon' style={icon ? undefined : { background: iconColor(it.name) }}>
+                  {icon ? (
+                    <Image className='item-icon-img' src={icon} mode='aspectFit' />
+                  ) : (
+                    <Text className='item-icon-text'>{it.name.slice(0, 1)}</Text>
+                  )}
+                </View>
+                <View className='item-name'>{it.name}</View>
+                <View className='item-meta'>
+                  <Text className='item-count'>x{it.count}</Text>
+                  {it.craftable ? <Text className='badge'>可合成</Text> : null}
+                </View>
+                <View className='item-mod'>{it.mod}</View>
               </View>
-              <View className='item-name'>{it.name}</View>
-              <View className='item-meta'>
-                <Text className='item-count'>x{it.count}</Text>
-                {it.craftable ? <Text className='badge'>可合成</Text> : null}
-              </View>
-              <View className='item-mod'>{it.mod}</View>
-            </View>
-          ))}
+            )
+          })}
         </View>
       </ScrollView>
     </View>

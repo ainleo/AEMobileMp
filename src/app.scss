@@ -37,3 +37,133 @@ page {
   color: var(--text-secondary);
   margin-bottom: 20px;
 }
+
+/* ---- 通用表单 / 列表工具类（各页共用） ---- */
+.form {
+  margin: 8px 0 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 0;
+  border-bottom: 2px solid var(--border);
+}
+
+.field--row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-size: 26px;
+  color: var(--text-secondary);
+}
+
+.input {
+  margin-top: 12px;
+  font-size: 30px;
+  height: 52px;
+  color: var(--text);
+}
+
+.hint {
+  margin-top: 20px;
+  font-size: 24px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.section-title {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.kv {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 2px solid var(--border);
+}
+
+.kv:last-child {
+  border-bottom: 0;
+}
+
+.k {
+  font-size: 26px;
+  color: var(--text-secondary);
+}
+
+.v {
+  font-size: 26px;
+  color: var(--text);
+}
+
+.grid-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cell {
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
+  background: #f2f3f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cell-img {
+  width: 100%;
+  height: 100%;
+}
+
+.empty {
+  display: block;
+  font-size: 24px;
+  color: var(--text-secondary);
+  padding: 12px 0;
+}
+
+.opts {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.opt {
+  flex: 1;
+  height: 88px;
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: var(--text);
+}
+
+.opt--on {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(52, 87, 255, 0.08);
+}
+
+/* ---- 深色主题：只改 CSS 变量，用 var() 的组件自动跟随 ---- */
+.theme-dark {
+  --text: #f2f3f5;
+  --text-secondary: #a0a6ad;
+  --bg: #141414;
+  --card: #1f1f1f;
+  --border: #2e3033;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}

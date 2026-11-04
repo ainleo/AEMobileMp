@@ -3,10 +3,12 @@ import { View, Text, Input, Switch } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import Button from '@taroify/core/button'
 import { SERVER_STORAGE_KEY } from '@/config/server'
+import { useThemeClass } from '@/hooks/useThemeClass'
 
 import './index.scss'
 
 export default function Login() {
+  const theme = useThemeClass()
   const [host, setHost] = useState('')
   const [port, setPort] = useState('44444')
   const [password, setPassword] = useState('')
@@ -46,7 +48,7 @@ export default function Login() {
   }
 
   return (
-    <View className='page login'>
+    <View className={`page login ${theme}`}>
       <View className='card'>
         <View className='title'>AEMobile</View>
         <View className='subtitle'>GTNH AE 网络监控 · 小程序版（聊天迁移 demo）</View>

@@ -1,0 +1,14 @@
+.keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.key {
+  font-size: 20px;
+  color: var(--text-secondary);
+  background: #f2f3f5;
+  border-radius: 6px;
+  padding: 2px 10px;
+}

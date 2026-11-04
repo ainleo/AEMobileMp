@@ -5,7 +5,11 @@ export default defineAppConfig({
     'pages/craft/index',
     'pages/monitor/index',
     'pages/chat/index',
-    'pages/settings/index'
+    'pages/settings/index',
+    'pages/settings/server/index',
+    'pages/settings/iconpack/index',
+    'pages/settings/cache/index',
+    'pages/settings/theme/index'
   ],
   window: {
     backgroundTextStyle: 'light',

@@ -9,6 +9,7 @@ import { parseAtt, attLabel, attDetail } from '@/lib/chatatt'
 import { MC_COLORS } from '@/lib/mcformat'
 import { McText } from '@/components/McText'
 import { buildMockChat, MOCK_REPLIES } from '@/mock/chat'
+import { useThemeClass } from '@/hooks/useThemeClass'
 import './index.scss'
 
 function hhmm(ts: number): string {
@@ -24,6 +25,7 @@ function avatarColor(name: string): string {
 }
 
 export default function Chat() {
+  const theme = useThemeClass()
   const server = useMemo(() => {
     try {
       const c = Taro.getStorageSync(SERVER_STORAGE_KEY)
@@ -65,7 +67,7 @@ export default function Chat() {
   }
 
   return (
-    <View className='chat-page'>
+    <View className={`chat-page ${theme}`}>
       <View className='chat-header'>
         <View>
           <View className='chat-title'>聊天</View>

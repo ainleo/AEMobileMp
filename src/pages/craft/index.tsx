@@ -2,13 +2,15 @@ import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import Button from '@taroify/core/button'
 import { MOCK_CPUS } from '@/mock/appData'
+import { useThemeClass } from '@/hooks/useThemeClass'
 import './index.scss'
 
 export default function Craft() {
+  const theme = useThemeClass()
   const busy = MOCK_CPUS.filter((c) => c.busy).length
 
   return (
-    <View className='page'>
+    <View className={`page ${theme}`}>
       <View className='card'>
         <View className='title'>合成 CPU</View>
         <View className='subtitle'>模拟数据 · {busy} 台运行中 · {MOCK_CPUS.length} 台总计</View>
