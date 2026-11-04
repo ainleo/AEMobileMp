@@ -3,16 +3,17 @@ import { View, Text, Input, Switch } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import Button from '@taroify/core/button'
 import { SERVER_STORAGE_KEY } from '@/config/server'
+import { LOCAL_CONFIG } from '@/config/local'
 import { useThemeClass } from '@/hooks/useThemeClass'
 
 import './index.scss'
 
 export default function Login() {
   const theme = useThemeClass()
-  const [host, setHost] = useState('mc1.dafeimao.net')
-  const [port, setPort] = useState('44444')
+  const [host, setHost] = useState(LOCAL_CONFIG.SERVER_HOST)
+  const [port, setPort] = useState(LOCAL_CONFIG.SERVER_PORT)
   const [password, setPassword] = useState('')
-  const [guest, setGuest] = useState(true)
+  const [guest, setGuest] = useState(LOCAL_CONFIG.SERVER_GUEST)
   const [nickname, setNickname] = useState('Steve')
   const [loading, setLoading] = useState(false)
 

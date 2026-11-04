@@ -11,14 +11,14 @@
 ### 小规模验证
 ```bash
 python tools/export_icons.py --db items.db --kind items ^
-  --base http://123.60.76.132:8088 --token <TOKEN> --category aemobile ^
+  --base http://YOUR_IMAGE_HOST:8088 --token <TOKEN> --category aemobile ^
   --out ./icon-out --limit 200 --concurrency 4
 ```
 
 ### 全量
 ```bash
 python tools/export_icons.py --db items.db --kind items ^
-  --base http://123.60.76.132:8088 --token <TOKEN> --category aemobile ^
+  --base http://YOUR_IMAGE_HOST:8088 --token <TOKEN> --category aemobile ^
   --out ./icon-out --concurrency 8
 ```
 

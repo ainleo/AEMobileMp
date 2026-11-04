@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro'
 import Button from '@taroify/core/button'
 
 import { SERVER_STORAGE_KEY } from '@/config/server'
+import { LOCAL_CONFIG } from '@/config/local'
 import { ChatLike, buildRows } from '@/lib/chatgroup'
 import { parseAtt, attLabel, attDetail } from '@/lib/chatatt'
 import { MC_COLORS } from '@/lib/mcformat'
@@ -29,9 +30,10 @@ export default function Chat() {
   const theme = useThemeClass()
   const server = useMemo(() => {
     try {
-      return Taro.getStorageSync(SERVER_STORAGE_KEY) || { host: 'mc1.dafeimao.net', port: '44444', guest: true, nickname: 'Steve' }
+      const fallback = { host: LOCAL_CONFIG.SERVER_HOST, port: LOCAL_CONFIG.SERVER_PORT, guest: LOCAL_CONFIG.SERVER_GUEST, nickname: 'Steve' }
+      return Taro.getStorageSync(SERVER_STORAGE_KEY) || fallback
     } catch {
-      return { host: 'mc1.dafeimao.net', port: '44444', guest: true, nickname: 'Steve' }
+      return { host: LOCAL_CONFIG.SERVER_HOST, port: LOCAL_CONFIG.SERVER_PORT, guest: LOCAL_CONFIG.SERVER_GUEST, nickname: 'Steve' }
     }
   }, [])
 
@@ -44,6 +46,7 @@ export default function Chat() {
   const [statusMsg, setStatusMsg] = useState('')
   const nextSeq = useRef(1)
   const clientRef = useRef<TcpChatClient | null>(null)
+  const seenRef = useRef<Set<string>>(new Set())
 
   useEffect(() => {
     if (!realMode) return
@@ -59,7 +62,17 @@ export default function Chat() {
         if (m) setStatusMsg(m)
       },
       onMessages: (rows) => {
-        setMsgs((prev) => [...prev, ...rows])
+        setMsgs((prev) => {
+          const add: ChatLike[] = []
+          for (const r of rows) {
+            const key = `${r.boot}:${r.seq}`
+            if (!seenRef.current.has(key)) {
+              seenRef.current.add(key)
+              add.push(r)
+            }
+          }
+          return add.length ? [...prev, ...add] : prev
+        })
       }
     })
     return () => {
@@ -79,17 +92,20 @@ export default function Chat() {
   const doSend = () => {
     const text = inputText.trim()
     if (!text) return
+    setInputText('')
+
+    // 实连模式：只发出去，等服务端 PUSH 回推（避免本地+回推重复）
     if (realMode && clientRef.current) {
       clientRef.current.sendChat(text)
+      return
     }
+
+    // 演示模式：本地插入 + 模拟回复
     append({ boot: -1, seq: nextSeq.current++, ts: Date.now(), kind: 1, name: myName, text })
-    setInputText('')
-    if (!realMode) {
-      setTimeout(() => {
-        const r = MOCK_REPLIES[Math.floor(Math.random() * MOCK_REPLIES.length)]
-        append({ boot: 1, seq: nextSeq.current++, ts: Date.now(), kind: 0, name: r.name, text: r.text, team: r.team, teamColor: r.teamColor, world: r.world })
-      }, 700)
-    }
+    setTimeout(() => {
+      const r = MOCK_REPLIES[Math.floor(Math.random() * MOCK_REPLIES.length)]
+      append({ boot: 1, seq: nextSeq.current++, ts: Date.now(), kind: 0, name: r.name, text: r.text, team: r.team, teamColor: r.teamColor, world: r.world })
+    }, 700)
   }
 
   const simulate = () => {

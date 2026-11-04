@@ -7,7 +7,7 @@ AEMobile 图标库 -> 图床 批量导出/上传工具。
 
 用法示例：
   python tools/export_icons.py --db items.db --kind items \
-    --base http://123.60.76.132:8088 --token <TOKEN> --category aemobile --out ./icon-out
+    --base http://YOUR_IMAGE_HOST:8088 --token <TOKEN> --category aemobile --out ./icon-out
 
 可选：
   --limit 200        只处理前 200 个（先小规模验证）
