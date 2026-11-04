@@ -1,0 +1,31 @@
+.rows {
+  padding: 0 24px;
+}
+
+.row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0;
+  border-bottom: 2px solid var(--border);
+}
+
+.row-item:last-child {
+  border-bottom: 0;
+}
+
+.row-label {
+  font-size: 28px;
+  color: var(--text);
+}
+
+.row-desc {
+  margin-top: 4px;
+  font-size: 22px;
+  color: var(--text-secondary);
+}
+
+.row-arrow {
+  font-size: 36px;
+  color: #c9cdd4;
+}

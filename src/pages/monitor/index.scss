@@ -1,0 +1,87 @@
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats {
+  display: flex;
+  margin-top: 24px;
+}
+
+.stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-num {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.stat-label {
+  margin-top: 4px;
+  font-size: 22px;
+  color: var(--text-secondary);
+}
+
+.section-title {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 220px;
+}
+
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.bar-fill {
+  width: 60%;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, #7aa2ff, #3457ff);
+  min-height: 6px;
+}
+
+.bar-label {
+  margin-top: 6px;
+  font-size: 16px;
+  color: #a0a6ad;
+  transform: scale(0.85);
+}
+
+.net {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 2px solid var(--border);
+}
+
+.net:last-child {
+  border-bottom: 0;
+}
+
+.net-name {
+  font-size: 26px;
+  color: var(--text);
+}
+
+.net-meta {
+  font-size: 22px;
+  color: var(--text-secondary);
+}

@@ -23,7 +23,7 @@ export default function Login() {
       nickname: nickname.trim() || 'Steve',
       demo
     })
-    Taro.reLaunch({ url: '/pages/chat/index' })
+    Taro.switchTab({ url: '/pages/items/index' })
   }
 
   const connect = () => {
