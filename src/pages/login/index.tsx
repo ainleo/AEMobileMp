@@ -9,10 +9,10 @@ import './index.scss'
 
 export default function Login() {
   const theme = useThemeClass()
-  const [host, setHost] = useState('')
+  const [host, setHost] = useState('mc1.dafeimao.net')
   const [port, setPort] = useState('44444')
   const [password, setPassword] = useState('')
-  const [guest, setGuest] = useState(false)
+  const [guest, setGuest] = useState(true)
   const [nickname, setNickname] = useState('Steve')
   const [loading, setLoading] = useState(false)
 
