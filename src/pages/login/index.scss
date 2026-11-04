@@ -1,0 +1,43 @@
+.login {
+  padding-top: 40px;
+}
+
+.form {
+  margin: 8px 0 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.field--row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.input {
+  margin-top: 6px;
+  font-size: 15px;
+  height: 28px;
+  color: var(--text);
+}
+
+.field--row .input {
+  margin-top: 0;
+}
+
+.hint {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
