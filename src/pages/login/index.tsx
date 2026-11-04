@@ -11,7 +11,20 @@ export default function Login() {
   const [port, setPort] = useState('44444')
   const [password, setPassword] = useState('')
   const [guest, setGuest] = useState(false)
+  const [nickname, setNickname] = useState('Steve')
   const [loading, setLoading] = useState(false)
+
+  const save = (demo: boolean) => {
+    Taro.setStorageSync(SERVER_STORAGE_KEY, {
+      host: demo ? 'demo.local' : host.trim(),
+      port: port.trim() || '44444',
+      password,
+      guest,
+      nickname: nickname.trim() || 'Steve',
+      demo
+    })
+    Taro.reLaunch({ url: '/pages/chat/index' })
+  }
 
   const connect = () => {
     if (!host.trim()) {
@@ -24,16 +37,9 @@ export default function Login() {
     }
     setLoading(true)
     try {
-      // TODO(network): 真实连接走 TCP→WSS 网关，按 protocol/conn 的 HELLO→AUTH→SUB 流程。
-      // 一期先保存服务器配置，进入聊天（本地模拟）。
-      Taro.setStorageSync(SERVER_STORAGE_KEY, {
-        host: host.trim(),
-        port: (port.trim() || '44444'),
-        password,
-        guest
-      })
+      // TODO(network): 真实连接走 TCP→WSS 网关（HELLO→AUTH→SUB chat）
       Taro.showToast({ title: '已保存，进入聊天', icon: 'success' })
-      setTimeout(() => Taro.reLaunch({ url: '/pages/chat/index' }), 400)
+      setTimeout(() => save(false), 300)
     } finally {
       setLoading(false)
     }
@@ -43,39 +49,27 @@ export default function Login() {
     <View className='page login'>
       <View className='card'>
         <View className='title'>AEMobile</View>
-        <View className='subtitle'>GTNH AE 网络监控 · 小程序版（登录 / 聊天 一期）</View>
+        <View className='subtitle'>GTNH AE 网络监控 · 小程序版（聊天迁移 demo）</View>
 
         <View className='form'>
           <View className='field'>
             <Text className='label'>服务器地址</Text>
-            <Input
-              className='input'
-              value={host}
-              onInput={(e: any) => setHost(e.detail.value)}
-              placeholder='IP 或域名（不带端口）'
-            />
+            <Input className='input' value={host} onInput={(e: any) => setHost(e.detail.value)} placeholder='IP 或域名（不带端口）' />
           </View>
 
           <View className='field'>
             <Text className='label'>端口</Text>
-            <Input
-              className='input'
-              type='number'
-              value={port}
-              onInput={(e: any) => setPort(e.detail.value)}
-              placeholder='44444'
-            />
+            <Input className='input' type='number' value={port} onInput={(e: any) => setPort(e.detail.value)} placeholder='44444' />
           </View>
 
           <View className='field'>
             <Text className='label'>访问密码</Text>
-            <Input
-              className='input'
-              password
-              value={password}
-              onInput={(e: any) => setPassword(e.detail.value)}
-              placeholder='AE 监控器输出的密码'
-            />
+            <Input className='input' password value={password} onInput={(e: any) => setPassword(e.detail.value)} placeholder='AE 监控器输出的密码' />
+          </View>
+
+          <View className='field'>
+            <Text className='label'>聊天昵称</Text>
+            <Input className='input' value={nickname} onInput={(e: any) => setNickname(e.detail.value)} placeholder='Steve' maxlength={16} />
           </View>
 
           <View className='field field--row'>
@@ -84,12 +78,14 @@ export default function Login() {
           </View>
         </View>
 
-        <Button type='primary' block loading={loading} onClick={connect}>
-          连接 / 登录
-        </Button>
+        <Button type='primary' block loading={loading} onClick={connect}>连接 / 登录</Button>
+
+        <View className='demo-btn'>
+          <Button block onClick={() => save(true)}>演示进入（本地模拟，无需服务器）</Button>
+        </View>
 
         <View className='hint'>
-          测试阶段：暂不建立真实连接，登录后进入聊天示例页（消息为本地模拟）。
+          测试阶段：不建立真实连接。点「演示进入」可直接体验聊天（模拟数据，含频道消息/颜色码/物品附件）。
         </View>
       </View>
     </View>

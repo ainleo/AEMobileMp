@@ -1,5 +1,5 @@
 .login {
-  padding-top: 40px;
+  padding-top: 32px;
 }
 
 .form {
@@ -9,7 +9,7 @@
 .field {
   display: flex;
   flex-direction: column;
-  padding: 10px 0;
+  padding: 9px 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -27,12 +27,12 @@
 .input {
   margin-top: 6px;
   font-size: 15px;
-  height: 28px;
+  height: 26px;
   color: var(--text);
 }
 
-.field--row .input {
-  margin-top: 0;
+.demo-btn {
+  margin-top: 10px;
 }
 
 .hint {
